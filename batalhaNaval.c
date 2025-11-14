@@ -1,8 +1,8 @@
 #include <stdio.h>
-
-#define TAM 10        // Tamanho do tabuleiro 10x10
-#define NAVIO 3       // Valor que representa navio
-#define TAM_NAVIO 3   // Tamanho fixo dos navios
+#include <stdlib.h> // Para usar abs()
+#define TAM 10
+#define NAVIO 3
+#define TAM_NAVIO 3
 
 int main() {
 
@@ -35,19 +35,19 @@ int main() {
         return 1;
     }
 
-    // 4️⃣ Validação dos limites (diagonal principal)
+    // 4️⃣ Validação diagonal ↘
     if (linhaDiag1 + TAM_NAVIO > TAM || colunaDiag1 + TAM_NAVIO > TAM) {
-        printf("Erro: Navio diagonal principal fora dos limites!\n");
+        printf("Erro: Navio diagonal ↘ fora dos limites!\n");
         return 1;
     }
 
-    // 5️⃣ Validação dos limites (diagonal inversa)
+    // 5️⃣ Validação diagonal ↙
     if (linhaDiag2 + TAM_NAVIO > TAM || colunaDiag2 - (TAM_NAVIO - 1) < 0) {
-        printf("Erro: Navio diagonal inversa fora dos limites!\n");
+        printf("Erro: Navio diagonal ↙ fora dos limites!\n");
         return 1;
     }
 
-    // 6️⃣ Verifica sobreposição para todos os navios
+    // 6️⃣ Verifica sobreposição
     for (int i = 0; i < TAM_NAVIO; i++) {
         if (tabuleiro[linhaNavioH][colunaNavioH + i] == NAVIO ||
             tabuleiro[linhaNavioV + i][colunaNavioV] == NAVIO ||
@@ -61,37 +61,85 @@ int main() {
     // 7️⃣ Posiciona navio horizontal
     for (int i = 0; i < TAM_NAVIO; i++) {
         tabuleiro[linhaNavioH][colunaNavioH + i] = NAVIO;
-        printf("Navio horizontal parte %d → posição (%d, %d)\n",
-               i + 1, linhaNavioH, colunaNavioH + i);
     }
 
     // 8️⃣ Posiciona navio vertical
     for (int i = 0; i < TAM_NAVIO; i++) {
         tabuleiro[linhaNavioV + i][colunaNavioV] = NAVIO;
-        printf("Navio vertical parte %d → posição (%d, %d)\n",
-               i + 1, linhaNavioV + i, colunaNavioV);
     }
 
-    // 9️⃣ Posiciona navio diagonal ↘ (principal)
+    // 9️⃣ Posiciona navio diagonal ↘
     for (int i = 0; i < TAM_NAVIO; i++) {
         tabuleiro[linhaDiag1 + i][colunaDiag1 + i] = NAVIO;
-        printf("Navio diagonal ↘ parte %d → posição (%d, %d)\n",
-               i + 1, linhaDiag1 + i, colunaDiag1 + i);
     }
 
-    // 🔟 Posiciona navio diagonal ↙ (inversa)
+    // 🔟 Posiciona navio diagonal ↙
     for (int i = 0; i < TAM_NAVIO; i++) {
         tabuleiro[linhaDiag2 + i][colunaDiag2 - i] = NAVIO;
-        printf("Navio diagonal ↙ parte %d → posição (%d, %d)\n",
-               i + 1, linhaDiag2 + i, colunaDiag2 - i);
     }
 
-    // 🔟 Exibe o tabuleiro completo
+    // 🧩 Exibe tabuleiro Nível Aventureiro
     printf("\n=== TABULEIRO BATALHA NAVAL — Nível Aventureiro ===\n\n");
 
     for (int i = 0; i < TAM; i++) {
         for (int j = 0; j < TAM; j++) {
             printf("%d ", tabuleiro[i][j]);
+        }
+        printf("\n");
+    }
+
+    // ===================================================
+    // 🏆 NÍVEL MESTRE — HABILIDADES ESPECIAIS
+    // ===================================================
+    int cone[5][5] = {0};
+    int cruz[5][5] = {0};
+    int octaedro[5][5] = {0};
+
+    // Habilidade CONE
+    for (int i = 0; i < 5; i++) {
+        for (int j = 2 - i; j <= 2 + i; j++) {
+            if (j >= 0 && j < 5) {
+                cone[i][j] = 1;
+            }
+        }
+    }
+
+    // Habilidade CRUZ
+    for (int i = 0; i < 5; i++) {
+        cruz[2][i] = 1;
+        cruz[i][2] = 1;
+    }
+
+    // Habilidade OCTAEDRO
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            if (abs(i - 2) + abs(j - 2) <= 2) {
+                octaedro[i][j] = 1;
+            }
+        }
+    }
+
+    // 📌 Exibir matrizes Mestre
+    printf("\n=== HABILIDADE: CONE ===\n");
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("%d ", cone[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n=== HABILIDADE: CRUZ ===\n");
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("%d ", cruz[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("\n=== HABILIDADE: OCTAEDRO ===\n");
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+            printf("%d ", octaedro[i][j]);
         }
         printf("\n");
     }
